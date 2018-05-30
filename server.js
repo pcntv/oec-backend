@@ -339,8 +339,26 @@ router.route('/oec/:client_id')
   
             res.json({ message: 'Successfully deleted' });
         });
-    });
+    })
 
+    // update the show with this id (accessed at PUT http://localhost:5000/api/shows/:show_id)
+        .put(function(req, res) {
+
+        // use our show model to find the show we want
+        Client.findByIdAndUpdate(
+            
+            req.params.client_id,
+            req.body,
+            {new: true},
+
+            // the callback function
+            (err, client) => {
+        // Handle any possible database errors
+            if (err) return res.status(500).send(err);
+            return res.send(client);
+        }
+    );
+})
 
 
 
@@ -379,12 +397,12 @@ router.route('/oec/:client_id')
                 
 
 
-            // save the show
-            show.save(function(err) {
+            // save the client
+            client.save(function(err) {
                 if (err)
                     res.send(err);
 
-                res.json({ message: 'Show updated!' });
+                res.json({ message: 'Client updated!' });
             });
 
         });
