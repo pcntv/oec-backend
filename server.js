@@ -347,17 +347,76 @@ router.route('/oec/:client_id')
 //Use this for info https://coursework.vschool.io/mongoose-crud/
 
 
-// =======SEARCH OEC==========
-// on routes that end in /api/oec/search
-//WORKS with categories like FUSION all caps
-    router.route('/oec/search/:client_type')
+// // =======SEARCH OEC==========
+// // on routes that end in /api/oec/search
+// //WORKS with categories like FUSION all caps
+//     router.route('/oec/search/:client_type')
+//     .get(function(req, res) {
+//         Client.find({
+//             typeOfClient: req.params.client_type,
+
+                    
+        
+//         }, function(err, client) {
+//             if (err)
+//                 res.send(err);
+//             res.json(client);
+//         });
+//     })
+
+    router.route('/oec/search/:query')
     .get(function(req, res) {
-        Client.find({typeOfClient: req.params.client_type}, function(err, client) {
+        Client.find({
+            typeOfClient: req.query.typeOfClient,
+            clientCompanyName: req.query.clientCompanyName
+        }, function(err, client) {
             if (err)
                 res.send(err);
             res.json(client);
         });
     })
+
+
+// var query = {};
+
+// if (req.body.firstname) {
+//     query.firstname = req.body.firstname;
+// }
+
+// if (req.body.lastname) {
+//     query.lastname = req.body.lastname;
+// }
+
+// db.users.find(query, function (err, docs) {
+//     // …
+// });
+
+    router.route('/oec/searching')
+    .post(function(req, res) {
+        var query = {};
+        if (req.body.clientCompanyName) {
+            query.clientCompanyName = req.body.clientCompanyName;
+        }
+        
+        if (req.body.typeOfClient) {
+            query.typeOfClient = req.body.typeOfClient;
+        }
+        
+        Client.find(query, function (err, docs) {
+            // …
+        });
+    })
+
+    .get(function(req, res) {
+
+        Client.find({}, function(err, clients) {
+    
+            if (err)
+                res.send(err);
+    
+            res.json(clients);
+        });
+    });
 
 
 // on routes that end in /shows/:show_id
