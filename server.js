@@ -69,24 +69,8 @@ router.route('/shows')
                 }]
             }]
         
-        });      // create a new instance of the Show model
-        // show.programName = req.body.programName;  // set the shows name (comes from the request)
-        // // show.episodeInfo = req.body.episodeName;
-        // show.episodeInfo.description = req.body.episodeName;
-        // show.episodeInfo.name = req.body.episodeInfo.name
-
-      
-        // show.episodeInfo.name = req.body.episodeInfo.name;
-        // show.episodeInfo.description = req.body.episodeInfo.description;
-        // show.episodeInfo.runTime = req.body.episodeInfo.runTime;
-        // show.episodeInfo.airTimes.date = req.body.episodeInfo.airTimes.date;
-        // show.episodeInfo.airTimes.startTime = req.body.episodeInfo.airTimes.startTime;
-        // show.episodeInfo.airTimes.endTime = req.body.episodeInfo.airTimes.endTime;
-        // show.episodeInfo.marketing.assign = req.body.show.episodeInfo.marketing.assign;
-        // show.episodeInfo.marketing.socialApproval = req.body.show.episodeInfo.marketing.socialApproval;
-        // show.modified = req.body.show.modified;
+        });     
         
-
 
         // save the show and check for errors
         show.save(function(err) {
@@ -363,6 +347,19 @@ router.route('/oec/:client_id')
 //Use this for info https://coursework.vschool.io/mongoose-crud/
 
 
+// =======SEARCH OEC==========
+// on routes that end in /api/oec/search
+//WORKS with categories like FUSION all caps
+    router.route('/oec/search/:client_type')
+    .get(function(req, res) {
+        Client.find({typeOfClient: req.params.client_type}, function(err, client) {
+            if (err)
+                res.send(err);
+            res.json(client);
+        });
+    })
+
+
 // on routes that end in /shows/:show_id
 // ----------------------------------------------------
   router.route('/shows/:show_id')
@@ -426,6 +423,20 @@ router.route('/oec/:client_id')
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+
+// // using SendGrid's v3 Node.js Library
+// // https://github.com/sendgrid/sendgrid-nodejs
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const msg = {
+//   to: 'sethkline@pcntv.com',
+//   from: 'test@example.com',
+//   subject: 'Sending with SendGrid is Fun',
+//   text: 'and easy to do anywhere, even with Node.js',
+//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+// };
+// sgMail.send(msg);
+
 
 // START THE SERVER
 // =============================================================================
