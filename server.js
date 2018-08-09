@@ -367,8 +367,10 @@ router.route('/oec/:client_id')
     router.route('/oec/search/:query')
     .get(function(req, res) {
         Client.find({
-            typeOfClient: req.query.typeOfClient,
-            clientCompanyName: { "$regex": req.query.clientCompanyName, "$options": "i" } 
+            typeOfClient: { "$regex": req.query.typeOfClient, "$options": "i" },
+            clientCompanyName: { "$regex": req.query.clientCompanyName, "$options": "i" },
+            // contractStartDate: { "$regex": req.query.contractStartDate, "$options": "i" },
+            // contractEndDate: { "$regex": req.query.contractEndDate, "$options": "i" } 
         }, function(err, client) {
             if (err)
                 res.send(err);
