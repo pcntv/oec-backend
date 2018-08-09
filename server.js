@@ -368,7 +368,7 @@ router.route('/oec/:client_id')
     .get(function(req, res) {
         Client.find({
             typeOfClient: req.query.typeOfClient,
-            clientCompanyName: req.query.clientCompanyName
+            clientCompanyName: { "$regex": req.query.clientCompanyName, "$options": "i" } 
         }, function(err, client) {
             if (err)
                 res.send(err);
@@ -376,7 +376,9 @@ router.route('/oec/:client_id')
         });
     })
 
-
+    // Person.find({ "name": { "$regex": "Alex", "$options": "i" } },
+    // function(err,docs) { 
+    // });
 // var query = {};
 
 // if (req.body.firstname) {
