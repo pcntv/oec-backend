@@ -218,6 +218,8 @@ router.route('/oec')
             socialMediaEndDate : req.body.socialMediaEndDate,
             socialFrequency : req.body.socialFrequency,
             socialAdditionalInfo : req.body.socialAdditionalInfo,
+            twitterHandle : req.body.twitterHandle,
+            facebookHandle : req.body.facebookHandle,
         production:
         req.body.production,
             productionLocation : req.body.productionLocation,

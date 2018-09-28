@@ -35,7 +35,9 @@ const Schema       = mongoose.Schema;
         socialMediaStartDate: String,
         socialMediaEndDate: String,
         socialFrequency: String,
-        socialAdditionalInfo: String
+        socialAdditionalInfo: String,
+        twitterHandle: String,
+        facebookHandle: String
     })
 
 
