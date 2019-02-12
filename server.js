@@ -2,7 +2,8 @@ const express    = require('express');        // call express
 const app        = express();                 // define our app using express
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://skline:skline@ds225608.mlab.com:25608/rest-api-test');
+require('dotenv').config();
+mongoose.connect(process.env.DB_CONN);
 
 const Show = require('./models/show');
 const Client = require('./models/client');
@@ -94,75 +95,11 @@ router.route('/shows')
   });
 
 
-//   .get(function(req, res) {
-//     Show.find(function(err, shows) {
 
-//         if (err)
-//             res.send(err);
-
-//         res.json(shows);
-//     });
-// });
   // get all the shows on a particular date GET http://localhost:5000/api/shows/:date)
   router.route('/shows/date/:date')
 
 
-  //https://stackoverflow.com/questions/21739827/mongoose-how-to-query-within-date-range-and-extract-highest-values-for-each-day
-//   Price.aggregate([
-//     // Match the date range
-//     { "$match": { "date": { "$lt": end, "$gt": start} } },
-
-//     // Change document with date to a value just for the day
-//     { "$project":{ 
-//         "date": {
-//            "year": { "$year": "$date"}, 
-//            "month": { "$month": "$date" }, 
-//            "day": { "$dayOfMonth": "$date"}
-//         },
-//         "price": 1
-//     }},
-
-//     // Sort everything (descending so highest price per day is on top)
-//     { "$sort": { "date.year": -1, "date.month": -1, "date.day": -1, "price": -1 }},
-
-//     // Group per day (now as a nice string), and keep the first price (highest)
-//     { "$group": { 
-//         "_id": {
-//             "$concat": [{ "$substr": ["$date.year", 0, 4] },
-//             "-",
-//            { "$substr": ["$date.month", 0, 2]},
-//             "-", 
-//            { "$substr": ["$date.day", 0, 2]}]
-//         },
-//         "price": { "$first": "$price"}
-//     }},
-
-//     // Make field names nicer
-//     { "$project": { "_id":0, "day": "$_id", "price": 1 } }
-
-// ],
-// function(err,result) {
-//     //process here
-// })
-
-
-//   .get(function(req, res) {
-//     Show.find({}).sort({req.params.show_id})(function(err, shows) {
-//         if (err)
-//             res.send(err);
-
-//         res.json(shows);
-//     });
-// });
-
-
-//  on routes that end in /oec
-// ---------------------------------------
-
-
-
-
-// https://hackernoon.com/managing-complex-data-structures-in-nodejs-17b571c0ba04  Saves the request to DB!!!!
 
 router.route('/oec')
 
@@ -346,25 +283,6 @@ router.route('/oec/:client_id')
     );
 })
 
-//Use this for info https://coursework.vschool.io/mongoose-crud/
-
-
-// // =======SEARCH OEC==========
-// // on routes that end in /api/oec/search
-// //WORKS with categories like FUSION all caps
-//     router.route('/oec/search/:client_type')
-//     .get(function(req, res) {
-//         Client.find({
-//             typeOfClient: req.params.client_type,
-
-                    
-        
-//         }, function(err, client) {
-//             if (err)
-//                 res.send(err);
-//             res.json(client);
-//         });
-//     })
 
     router.route('/oec/search/:query')
     .get(function(req, res) {
@@ -380,22 +298,6 @@ router.route('/oec/:client_id')
         });
     })
 
-    // Person.find({ "name": { "$regex": "Alex", "$options": "i" } },
-    // function(err,docs) { 
-    // });
-// var query = {};
-
-// if (req.body.firstname) {
-//     query.firstname = req.body.firstname;
-// }
-
-// if (req.body.lastname) {
-//     query.lastname = req.body.lastname;
-// }
-
-// db.users.find(query, function (err, docs) {
-//     // …
-// });
 
     router.route('/oec/searching')
     .post(function(req, res) {
@@ -447,18 +349,7 @@ router.route('/oec/:client_id')
             if (err)
                 res.send(err);
 
-                // show.programName = req.body.programName;  // update the info
-                // show.episodeInfo.name = req.body.episodeInfo.name;
-                // show.episodeInfo.description = req.body.episodeInfo.description;
-                // show.episodeInfo.runTime = req.body.episodeInfo.runTime;
-                // show.episodeInfo.airTimes.date = req.body.episodeInfo.airTimes.date;
-                // show.episodeInfo.airTimes.startTime = req.body.episodeInfo.airTimes.startTime;
-                // show.episodeInfo.airTimes.endTime = req.body.episodeInfo.airTimes.endTime;
-                // show.episodeInfo.marketing.assign = req.body.show.episodeInfo.marketing.assign;
-                // show.episodeInfo.marketing.socialApproval = req.body.show.episodeInfo.marketing.socialApproval;
-                // show.modified = req.body.show.modified;
-                
-
+        
 
             // save the client
             client.save(function(err) {
@@ -488,19 +379,6 @@ router.route('/oec/:client_id')
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
-
-// // using SendGrid's v3 Node.js Library
-// // https://github.com/sendgrid/sendgrid-nodejs
-// const sgMail = require('@sendgrid/mail');
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-// const msg = {
-//   to: 'sethkline@pcntv.com',
-//   from: 'test@example.com',
-//   subject: 'Sending with SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-// };
-// sgMail.send(msg);
 
 
 // START THE SERVER
